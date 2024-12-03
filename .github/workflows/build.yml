@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the article PDF
+    concurrency: showyourwork-${{ github.ref }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build the article PDF
+        id: build
+        uses: showyourwork/showyourwork-action@v1
+        with:
+          showyourwork-spec: git+https://github.com/showyourwork/showyourwork.git@97fc1c386a6053d69fae4a6e300a45a8b825270b#egg=showyourwork
+        env:
+          SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
+          OVERLEAF_TOKEN: ${{ secrets.OVERLEAF_TOKEN }}
